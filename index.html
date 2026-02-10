@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,89 +12,82 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            background-color: #ffe4e1; /* لون وردي هادئ */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ffe4e1;
+            font-family: sans-serif;
             text-align: center;
             overflow: hidden;
         }
-        .container {
-            padding: 20px;
-        }
-        h1 { 
-            color: #d63384; 
-            font-size: 2.5rem; 
-            margin-bottom: 30px;
-        }
-        .heart-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
-        }
-        .buttons { 
+        .container { width: 100%; position: relative; }
+        h1 { color: #d63384; margin-bottom: 30px; }
+        .heart { font-size: 80px; }
+        
+        .btn-group {
             display: flex;
             justify-content: center;
-            align-items: center;
             gap: 20px;
+            margin-top: 20px;
         }
+
         button {
-            padding: 15px 40px;
+            padding: 15px 35px;
             font-size: 1.2rem;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        #yesBtn { 
-            background-color: #ff4d6d; 
-            color: white; 
-        }
-        #noBtn { 
-            background-color: #adb5bd; 
-            color: white; 
-            position: relative; /* ضروري لكي يتحرك الزر */
-        }
-        .celebration { display: none; }
-        
-        .celebration h1 {
-            font-size: 3.5rem;
-            animation: bounce 1s infinite;
+            z-index: 100; /* لضمان بقاء الأزرار في المقدمة */
         }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+        #yesBtn {
+            background-color: #ff4d6d;
+            color: white;
         }
+
+        #noBtn {
+            background-color: #adb5bd;
+            color: white;
+            position: relative; /* سيتغير إلى absolute بواسطة JS عند اللمس */
+        }
+
+        .celebration { display: none; }
+        .celebration h1 { font-size: 3rem; color: #ff4d6d; }
     </style>
 </head>
 <body>
 
-    <div id="main-content" class="container">
-        <div class="heart-icon">❤️</div>
+    <div id="main-content">
+        <div class="heart">❤️</div>
         <h1>Ganna, will you be my valentine?</h1>
-        <div class="buttons">
+        <div class="btn-group">
             <button id="yesBtn" onclick="celebrate()">Yes</button>
-            <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No</button>
+            <button id="noBtn" onmouseover="moveButton()" ontouchstart="moveButton()">No</button>
         </div>
     </div>
 
-    <div id="celebration" class="celebration container">
-        <div class="heart-icon">💖✨</div>
+    <div id="celebration" class="celebration">
+        <div class="heart">💖✨</div>
         <h1>YAY! 🎉</h1>
         <h1>I knew you'd say YES! 🥰</h1>
     </div>
 
     <script>
-        // دالة تجعل زر "No" يهرب عند محاولة الضغط عليه
         function moveButton() {
             const noBtn = document.getElementById('noBtn');
-            // حساب أبعاد عشوائية داخل حدود الشاشة
+            // تحويل الزر إلى وضع الحرية في الحركة فور لمسه
+            noBtn.style.position = 'absolute';
+            
+            // حساب مكان عشوائي بعيداً عن زر Yes
             const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
             const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
             
-            noBtn.style.position = 'absolute';
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
         }
 
-        // دالة إظهار رسالة النجاح
-        function celebrate()
+        function celebrate() {
+            // إخفاء السؤال وإظهار الاحتفال
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('celebration').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
